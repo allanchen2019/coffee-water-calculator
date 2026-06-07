@@ -568,3 +568,57 @@ footer.app-footer {
 .acknowledgements a:hover {
   text-decoration: underline;
 }
+
+/* TDS Section */
+.tds-display-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed var(--border);
+}
+
+@media (min-width: 580px) {
+  .tds-display-section {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.tds-item {
+  background-color: var(--bg-app);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tds-label {
+  display: block;
+  font-family: var(--font-title);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-sub);
+}
+
+.tds-value {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.tds-unit {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-sub);
+}
+
+.tds-detail {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+}

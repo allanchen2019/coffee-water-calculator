@@ -42,6 +42,12 @@
   碳酸氢钾在 1L 纯水中提供 499.86 ppm 的等效 CaCO₃ 碱度。
   $$ \text{克数(KHCO₃)} = \frac{\text{目标KH (ppm)} \times \text{水体积(L)}}{499.86} $$
 
+- **预期 TDS 计算**:
+  - **预期无水离子 TDS**: 仅统计溶解在水中的无水无机矿物离子质量浓度（排除七水硫酸镁的结晶水，无水 $MgSO_4$ 比例约为 $48.84\%$）。
+    $$ \text{TDS (无水)} = \frac{(\text{克数(Epsom)} \times 0.4884 + \text{克数(KHCO₃)}) \times 1000}{\text{水体积(L)}} $$
+  - **直加盐总质量浓度 (Total Salt Weight)**: 投加的化合物干燥粉末总重量与水体体积之比。
+    $$ \text{TDS (总粉重)} = \frac{(\text{克数(Epsom)} + \text{克数(KHCO₃)}) \times 1000}{\text{水体积(L)}} $$
+
 ---
 
 ## 🛠️ 直加调制标准步骤 (SOP)

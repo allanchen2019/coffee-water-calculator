@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const khco3WeightMg = document.getElementById('khco3-weight-mg');
   
   const precisionAlert = document.getElementById('precision-alert');
+  const tdsValueAnhydrous = document.getElementById('tds-value-anhydrous');
+  const tdsValueTotal = document.getElementById('tds-value-total');
   const flavorPrediction = document.getElementById('flavor-prediction');
   const canvas = document.getElementById('flavor-chart');
   
@@ -110,6 +112,8 @@ document.addEventListener('DOMContentLoaded', () => {
       epsomWeightMg.textContent = '(0.0 mg)';
       khco3WeightGrams.textContent = '0.000';
       khco3WeightMg.textContent = '(0.0 mg)';
+      tdsValueAnhydrous.textContent = '0';
+      tdsValueTotal.textContent = '0';
       precisionAlert.style.display = 'none';
       return;
     }
@@ -126,6 +130,13 @@ document.addEventListener('DOMContentLoaded', () => {
     epsomWeightMg.textContent = `(${(epsomGrams * 1000).toFixed(1)} mg)`;
     khco3WeightGrams.textContent = khco3Grams.toFixed(3);
     khco3WeightMg.textContent = `(${(khco3Grams * 1000).toFixed(1)} mg)`;
+
+    // TDS calculations
+    // MgSO4 * 7H2O anhydrous ratio is ~0.48837. KHCO3 is 1.0
+    const anhydrousTds = ((epsomGrams * 0.48837 + khco3Grams) * 1000) / volumeL;
+    const totalTds = ((epsomGrams + khco3Grams) * 1000) / volumeL;
+    tdsValueAnhydrous.textContent = Math.round(anhydrousTds);
+    tdsValueTotal.textContent = Math.round(totalTds);
 
     // Warning trigger
     if ((epsomGrams > 0 && epsomGrams < 0.05) || (khco3Grams > 0 && khco3Grams < 0.05)) {
