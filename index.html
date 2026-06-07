@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>咖啡冲煮用水配方计算器 | Coffee Water Recipe Calculator</title>
+  <!-- SEO Meta -->
+  <meta name="description" content="一款精美的咖啡冲煮用水配方计算器。根据选择的流行配方（如 SCA Standard、Barista Hustle 80/40、Hendon 等）或自定义参数，计算直加碳酸氢钾和泻盐（七水硫酸镁）的精确克数和毫克数。">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="logo-area">
+        <span class="logo-icon">☕</span>
+        <h1>咖啡冲煮用水配方计算器</h1>
+      </div>
+      <p class="subtitle">根据目标硬度与碱度，精准计算泻盐（七水硫酸镁）与碳酸氢钾的直加用量。</p>
+    </header>
+
+    <main class="main-layout">
+      <!-- Left Panel: Inputs -->
+      <section class="control-panel card">
+        <h2 class="section-title">配方与水体参数 Setup</h2>
+
+        <!-- Recipe Preset Selector -->
+        <div class="form-group">
+          <label for="recipe-preset" class="field-label">选择流行配方 Preset Recipe</label>
+          <select id="recipe-preset" class="custom-select">
+            <option value="sca-perger" selected>SCA Standard / Matt Perger (GH: 68.6, KH: 40.1)</option>
+            <option value="bh-80-40">Barista Hustle 80/40 (GH: 80.7, KH: 40.1)</option>
+            <option value="melbourne">Melbourne Water 1.0 (GH: 23.7, KH: 11.5)</option>
+            <option value="budapest">WOC Budapest (GH: 51.2, KH: 40.1)</option>
+            <option value="rao">Rao Water (GH: 75.7, KH: 50.1)</option>
+            <option value="hendon">Hendon Water (GH: 99.9, KH: 30.8)</option>
+            <option value="pretty-hard">Pretty Hard (GH: 126.1, KH: 35.1)</option>
+            <option value="hard-af">Hard dot AF (GH: 176.8, KH: 45.2)</option>
+            <option value="custom">自定义目标 Custom Target</option>
+          </select>
+        </div>
+
+        <!-- Water Volume Input -->
+        <div class="form-group">
+          <label for="water-volume" class="field-label">目标水总容量 Water Volume</label>
+          <div class="input-with-select">
+            <input 
+              type="number" 
+              id="water-volume" 
+              value="1" 
+              min="0.01" 
+              step="any" 
+              required
+              aria-describedby="volume-hint"
+            >
+            <select id="volume-unit" class="unit-select">
+              <option value="L" selected>升 (L)</option>
+              <option value="mL">毫升 (mL)</option>
+              <option value="gal">加仑 (US gal)</option>
+              <option value="oz">液量盎司 (US fl oz)</option>
+            </select>
+          </div>
+          <span id="volume-hint" class="hint">请输入大于零的水体体积。</span>
+        </div>
+
+        <!-- Hardness Unit Toggle -->
+        <div class="form-group">
+          <label for="hardness-unit" class="field-label">数值计算单位 Target Unit</label>
+          <select id="hardness-unit" class="custom-select">
+            <option value="ppm" selected>ppm (mg/L as CaCO₃)</option>
+            <option value="dgh">德意志度 (°dGH / °dKH)</option>
+          </select>
+        </div>
+
+        <!-- GH Slider & Input -->
+        <div class="form-group slider-group">
+          <div class="slider-header">
+            <label for="target-gh" class="field-label">目标总硬度 Target GH (Magnesium)</label>
+            <div class="value-display">
+              <input 
+                type="number" 
+                id="target-gh" 
+                value="68.6" 
+                min="0" 
+                max="300" 
+                step="0.1"
+                required
+              >
+              <span class="unit-label text-unit">ppm</span>
+            </div>
+          </div>
+          <input 
+            type="range" 
+            id="target-gh-slider" 
+            min="0" 
+            max="300" 
+            step="0.5" 
+            value="68.6"
+          >
+          <span class="hint">主要提供镁离子以协助风味物质（水果酸、果香）的萃取。</span>
+        </div>
+
+        <!-- KH Slider & Input -->
+        <div class="form-group slider-group">
+          <div class="slider-header">
+            <label for="target-kh" class="field-label">目标碱度/缓冲 Target KH (Buffer)</label>
+            <div class="value-display">
+              <input 
+                type="number" 
+                id="target-kh" 
+                value="40.1" 
+                min="0" 
+                max="150" 
+                step="0.1"
+                required
+              >
+              <span class="unit-label text-unit">ppm</span>
+            </div>
+          </div>
+          <input 
+            type="range" 
+            id="target-kh-slider" 
+            min="0" 
+            max="150" 
+            step="0.5" 
+            value="40.1"
+          >
+          <span class="hint">碳酸氢盐缓冲体系，负责中和咖啡中的过高酸度，调整酸甜感。</span>
+        </div>
+      </section>
+
+      <!-- Right Panel: Results & Chart -->
+      <div class="results-area">
+        <!-- Results Card -->
+        <section class="results-card card">
+          <h2 class="section-title">直加配方用量 Dosage Results</h2>
+          
+          <div class="dosage-grid">
+            <!-- Magnesium Sulfate -->
+            <div class="dosage-item magnesium">
+              <div class="dosage-title-row">
+                <span class="dosage-badge gh-badge">GH</span>
+                <h3>泻盐 Epsom Salt</h3>
+              </div>
+              <span class="chemical-formula">MgSO₄ · 7H₂O (七水硫酸镁)</span>
+              <div class="weight-display" id="epsom-weight-container">
+                <span class="weight-value" id="epsom-weight-grams">0.169</span> <span class="weight-unit">g</span>
+                <span class="weight-sub-value" id="epsom-weight-mg">(168.9 mg)</span>
+              </div>
+              <p class="dosage-desc">直加纯净水中搅拌溶解，以提供所需的镁硬度。</p>
+            </div>
+
+            <!-- Potassium Bicarbonate -->
+            <div class="dosage-item buffer">
+              <div class="dosage-title-row">
+                <span class="dosage-badge kh-badge">KH</span>
+                <h3>碳酸氢钾 Potassium Bicarbonate</h3>
+              </div>
+              <span class="chemical-formula">KHCO₃</span>
+              <div class="weight-display" id="khco3-weight-container">
+                <span class="weight-value" id="khco3-weight-grams">0.080</span> <span class="weight-unit">g</span>
+                <span class="weight-sub-value" id="khco3-weight-mg">(80.2 mg)</span>
+              </div>
+              <p class="dosage-desc">直加纯净水中搅拌溶解，以提供酸度缓冲（碱度）。</p>
+            </div>
+          </div>
+
+          <!-- Scale Precision Alert -->
+          <div class="alert-box warning-alert" id="precision-alert" style="display: none;">
+            <strong class="alert-title">⚠️ 秤量精度警告 Precision Warning</strong>
+            <p class="alert-msg">当前所需称量值低于 0.05g，普通厨房秤（0.1g精度）误差过大。建议使用 0.01g 精度微量天平，或者将水体容量放大 5–10 倍后进行直加秤量。</p>
+          </div>
+        </section>
+
+        <!-- Visualization Card -->
+        <section class="chart-card card">
+          <h2 class="section-title">萃取风味象限 Extract & Flavor Chart</h2>
+          <div class="canvas-container">
+            <canvas id="flavor-chart" width="400" height="300"></canvas>
+          </div>
+          <div class="chart-legend">
+            <p class="flavor-status-text">当前水质属性预测：<span id="flavor-prediction" class="prediction-highlight">SCA 标准均衡水 (Balanced)</span></p>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Mixing Guide SOP -->
+    <section class="guide-section card">
+      <h2 class="section-title">直加调制标准操作程序 Mixing SOP</h2>
+      <ol class="sop-list">
+        <li>
+          <div class="sop-step">
+            <span class="sop-num">1</span>
+            <div>
+              <strong>准备纯净水 (Base Water)</strong>
+              <p>使用去离子水 (Deionized)、反渗透水 (RO) 或蒸馏水 (Distilled) 作为基准水。确保基质 TDS 接近 0 ppm。</p>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="sop-step">
+            <span class="sop-num">2</span>
+            <div>
+              <strong>精准秤量矿物盐 (Precision Weighing)</strong>
+              <p>使用 0.01g 精度的珠宝秤或微量电子天平。分别秤取上述计算出的 <strong class="color-gh">泻盐 (MgSO₄ · 7H₂O)</strong> 与 <strong class="color-kh">碳酸氢钾 (KHCO₃)</strong>。</p>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="sop-step">
+            <span class="sop-num">3</span>
+            <div>
+              <strong>混合与溶解 (Dissolving)</strong>
+              <p>建议先取少量水（如 100mL）并微微加热，加入上述秤好的盐粉充分搅拌至完全透明。最后倒回原水桶，摇匀即可。或者直接撒入大桶水中剧烈摇晃溶解。</p>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="sop-step">
+            <span class="sop-num">4</span>
+            <div>
+              <strong>标示与储存 (Storage)</strong>
+              <p>在水桶外贴上标签，写明调制配方和日期。建议避光常温密封储存，并在 2 周内使用完毕。</p>
+            </div>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- Scientific Parameters & Equations -->
+    <section class="math-section card">
+      <h2 class="section-title">计算公式与化学常数 Reference Math</h2>
+      <div class="math-grid">
+        <div>
+          <h4>总硬度 (GH) 计算模型</h4>
+          <p>镁硬度以等效 CaCO₃ 计。七水硫酸镁的分子量为 246.47 g/mol，CaCO₃ 为 100.09 g/mol。</p>
+          <p class="equation">$$ \text{克数(Epsom)} = \frac{\text{目标GH (ppm)} \times \text{水体积(L)}}{406.08} $$</p>
+          <p class="math-detail">其中 1g 泻盐溶于 1L 水可提供 406.08 ppm 的等效 CaCO₃ 硬度。</p>
+        </div>
+        <div>
+          <h4>碳酸盐硬度 (KH) 计算模型</h4>
+          <p>碱度以等效 CaCO₃ 计。碳酸氢钾分子量为 100.12 g/mol。因为 1 摩尔碳酸钙能中和 2 摩尔质子，而 1 摩尔碳酸氢钾仅能中和 1 摩尔质子，所以 2 摩尔 KHCO₃ 的中和力等效于 1 摩尔 CaCO₃。</p>
+          <p class="equation">$$ \text{克数(KHCO₃)} = \frac{\text{目标KH (ppm)} \times \text{水体积(L)}}{499.86} $$</p>
+          <p class="math-detail">其中 1g 碳酸氢钾溶于 1L 水可提供 499.86 ppm 的等效 CaCO₃ 碱度。</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="app-footer">
+    <p>© 2026 咖啡冲煮用水配方计算器 | 极致风味，科学重构。每次回复以喵结尾喵~</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
