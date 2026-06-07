@@ -49,3 +49,14 @@
 1. **准备基水**：准备接近 0 ppm 的去离子水、反渗透水或蒸馏水。
 2. **精密秤量**：使用 0.01g 精度电子天平，秤取对应克数的泻盐与碳酸氢钾。
 3. **溶解摇匀**：取少量温水彻底溶解矿物盐粉末，随后倒入大桶基水中摇匀即可。
+
+---
+
+## ☕ 参考与致谢 (References & Acknowledgements)
+
+本计算器的设计与数学模型建立过程中参考了以下优秀的项目与文献：
+
+- **[coffeewater.app](https://coffeewater.app/)**：提供了绝佳的交互与直观水质计算界面灵感。
+- **[Barista Hustle (Matt Perger)](https://www.baristahustle.com/blog/diy-water-recipes-redux/)**：经典 DIY 矿物浓缩配水法与 preset 预设值来源。
+- **Dr. Christopher Hendon & Maxwell Colonna-Dashwood**：著作《*Water for Coffee*》奠定了咖啡冲煮水化学（GH/KH 相互关系）的理论基础。
+- **Scott Rao**：对高品质冲煮水标准的实践经验总结。
